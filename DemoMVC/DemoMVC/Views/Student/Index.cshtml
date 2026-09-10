@@ -1,0 +1,40 @@
+@model DemoMVC.Models.Student
+
+<h1>View Index StudentController</h1>
+
+<form asp-action="Index" method="post">
+    <div style="margin-bottom: 10px;">
+        <label>Họ tên:</label><br />
+        <input type="text" asp-for="HoTen" required />
+    </div>
+
+    <div style="margin-bottom: 10px;">
+        <label>Tuổi:</label><br />
+        <input type="number" asp-for="Tuoi" required />
+    </div>
+
+    <div style="margin-bottom: 10px;">
+        <label>Địa chỉ:</label><br />
+        <input type="text" asp-for="DiaChi" required />
+    </div>
+
+    <div style="margin-bottom: 10px;">
+        <label>Trường:</label><br />
+        <input type="text" asp-for="Truong" required />
+    </div>
+
+    <button type="submit">Gửi dữ liệu</button>
+</form>
+
+@* Kiểm tra nếu Model có dữ liệu (đã submit form) thì hiển thị kết quả *@
+@if (Model != null)
+{
+    <hr />
+    <div style="color: green;">
+        <h3>Thông tin sinh viên đã nhận:</h3>
+        <p><strong>Họ tên:</strong> @Model.HoTen</p>
+        <p><strong>Tuổi:</strong> @Model.Tuoi</p>
+        <p><strong>Địa chỉ:</strong> @Model.DiaChi</p>
+        <p><strong>Trường:</strong> @Model.Truong</p>
+    </div>
+}

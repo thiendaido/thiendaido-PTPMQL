@@ -1,0 +1,28 @@
+name: ASP.NET Core MVC CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore ./DemoMVC
+
+      - name: Build project
+        run: dotnet build ./DemoMVC --configuration Release --no-restore
+
+      - name: Publish project
+        run: dotnet publish ./DemoMVC --configuration Release --output ./publish --no-build

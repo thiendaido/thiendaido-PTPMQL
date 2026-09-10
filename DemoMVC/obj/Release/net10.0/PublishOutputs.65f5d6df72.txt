@@ -1,0 +1,7 @@
+C:\Users\THIEN DAI\Desktop\PTPMQL\DemoMVC\publish\DemoMVC.exe
+C:\Users\THIEN DAI\Desktop\PTPMQL\DemoMVC\publish\appsettings.Development.json
+C:\Users\THIEN DAI\Desktop\PTPMQL\DemoMVC\publish\appsettings.json
+C:\Users\THIEN DAI\Desktop\PTPMQL\DemoMVC\publish\DemoMVC.dll
+C:\Users\THIEN DAI\Desktop\PTPMQL\DemoMVC\publish\DemoMVC.deps.json
+C:\Users\THIEN DAI\Desktop\PTPMQL\DemoMVC\publish\DemoMVC.runtimeconfig.json
+C:\Users\THIEN DAI\Desktop\PTPMQL\DemoMVC\publish\DemoMVC.pdb

@@ -96,3 +96,9 @@ C:\Users\THIEN DAI\Desktop\PTPMQL\DemoMVC\obj\Debug\net10.0\DemoMVC.pdb
 C:\Users\THIEN DAI\Desktop\PTPMQL\DemoMVC\obj\Debug\net10.0\DemoMVC.genruntimeconfig.cache
 C:\Users\THIEN DAI\Desktop\PTPMQL\DemoMVC\obj\Debug\net10.0\ref\DemoMVC.dll
 C:\Users\THIEN DAI\Desktop\PTPMQL\DemoMVC\obj\Debug\net10.0\DemoMVC.sourcelink.json
+C:\Users\THIEN DAI\Desktop\PTPMQL\DemoMVC\bin\Debug\net10.0\publish\web.config
+C:\Users\THIEN DAI\Desktop\PTPMQL\DemoMVC\bin\Debug\net10.0\publish\appsettings.Development.json
+C:\Users\THIEN DAI\Desktop\PTPMQL\DemoMVC\bin\Debug\net10.0\publish\appsettings.json
+C:\Users\THIEN DAI\Desktop\PTPMQL\DemoMVC\bin\Debug\net10.0\publish\DemoMVC.deps.json
+C:\Users\THIEN DAI\Desktop\PTPMQL\DemoMVC\bin\Debug\net10.0\publish\DemoMVC.runtimeconfig.json
+C:\Users\THIEN DAI\Desktop\PTPMQL\DemoMVC\bin\Debug\net10.0\publish\DemoMVC.staticwebassets.endpoints.json

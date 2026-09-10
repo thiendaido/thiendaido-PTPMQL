@@ -1,0 +1,43 @@
+@{
+    ViewData["Title"] = "Demo State Management";
+    
+    // Ép kiểu dữ liệu khi lấy từ ViewData
+    int count = ViewData["ItemCount"] != null ? (int)ViewData["ItemCount"] : 0;
+}
+
+<h2>@ViewData["HeaderTitle"]</h2>
+<p>Số lượng vật phẩm (lấy từ ViewData): <strong>@count</strong></p>
+
+<hr />
+
+<h3>1. Hiển thị dữ liệu từ ViewBag</h3>
+<p class="text-info">@ViewBag.Message</p>
+<p>Ngày hiện tại: <strong>@ViewBag.CurrentDate</strong></p>
+
+<hr />
+
+<h3>2. Thử nghiệm TempData qua Form Submit (Redirect)</h3>
+
+@* Hiển thị thông báo thành công từ TempData *@
+@if (TempData["SuccessMessage"] != null)
+{
+    <div style="padding: 10px; background-color: #d4edda; color: #155724; margin-bottom: 15px;">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@* Hiển thị thông báo lỗi từ TempData *@
+@if (TempData["ErrorMessage"] != null)
+{
+    <div style="padding: 10px; background-color: #f8d7da; color: #721c24; margin-bottom: 15px;">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<form asp-action="SubmitState" method="post">
+    <div>
+        <label>Tên sinh viên:</label>
+        <input type="text" name="studentName" />
+        <button type="submit">Lưu sinh viên</button>
+    </div>
+</form>
