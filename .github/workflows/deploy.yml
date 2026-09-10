@@ -19,10 +19,10 @@ jobs:
           dotnet-version: '10.0.x'
 
       - name: Restore dependencies
-        run: dotnet restore ./DemoMVC
+        run: dotnet restore DemoMVC/DemoMVC.csproj
 
       - name: Build project
-        run: dotnet build ./DemoMVC --configuration Release --no-restore
+        run: dotnet build DemoMVC/DemoMVC.csproj --no-restore
 
       - name: Publish project
         run: dotnet publish ./DemoMVC --configuration Release --output ./publish --no-build
