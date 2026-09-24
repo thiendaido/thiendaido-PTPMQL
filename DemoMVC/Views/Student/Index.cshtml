@@ -1,40 +1,53 @@
-@model DemoMVC.Models.Student
+@model IEnumerable<DemoMVC.Models.Student>
 
-<h1>View Index StudentController</h1>
-
-<form asp-action="Index" method="post">
-    <div style="margin-bottom: 10px;">
-        <label>Họ tên:</label><br />
-        <input type="text" asp-for="HoTen" required />
-    </div>
-
-    <div style="margin-bottom: 10px;">
-        <label>Tuổi:</label><br />
-        <input type="number" asp-for="Tuoi" required />
-    </div>
-
-    <div style="margin-bottom: 10px;">
-        <label>Địa chỉ:</label><br />
-        <input type="text" asp-for="DiaChi" required />
-    </div>
-
-    <div style="margin-bottom: 10px;">
-        <label>Trường:</label><br />
-        <input type="text" asp-for="Truong" required />
-    </div>
-
-    <button type="submit">Gửi dữ liệu</button>
-</form>
-
-@* Kiểm tra nếu Model có dữ liệu (đã submit form) thì hiển thị kết quả *@
-@if (Model != null)
-{
-    <hr />
-    <div style="color: green;">
-        <h3>Thông tin sinh viên đã nhận:</h3>
-        <p><strong>Họ tên:</strong> @Model.HoTen</p>
-        <p><strong>Tuổi:</strong> @Model.Tuoi</p>
-        <p><strong>Địa chỉ:</strong> @Model.DiaChi</p>
-        <p><strong>Trường:</strong> @Model.Truong</p>
-    </div>
+@{
+    ViewData["Title"] = "Index";
 }
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.HoTen)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tuoi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DiaChi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Truong)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.HoTen)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tuoi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DiaChi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Truong)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\THIEN DAI\\Desktop\\PTPMQL\\DemoMVC\\DemoMVC.csproj": {}
+    "C:\\Users\\THIEN DAI\\Desktop\\PTPMQL\\DemoMVC\\DemoMVC.csproj": {}
   },
   "projects": {
-    "c:\\Users\\THIEN DAI\\Desktop\\PTPMQL\\DemoMVC\\DemoMVC.csproj": {
+    "C:\\Users\\THIEN DAI\\Desktop\\PTPMQL\\DemoMVC\\DemoMVC.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\THIEN DAI\\Desktop\\PTPMQL\\DemoMVC\\DemoMVC.csproj",
+        "projectUniqueName": "C:\\Users\\THIEN DAI\\Desktop\\PTPMQL\\DemoMVC\\DemoMVC.csproj",
         "projectName": "DemoMVC",
-        "projectPath": "c:\\Users\\THIEN DAI\\Desktop\\PTPMQL\\DemoMVC\\DemoMVC.csproj",
+        "projectPath": "C:\\Users\\THIEN DAI\\Desktop\\PTPMQL\\DemoMVC\\DemoMVC.csproj",
         "packagesPath": "C:\\Users\\THIEN DAI\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\THIEN DAI\\Desktop\\PTPMQL\\DemoMVC\\obj\\",
+        "outputPath": "C:\\Users\\THIEN DAI\\Desktop\\PTPMQL\\DemoMVC\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\THIEN DAI\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -61,6 +61,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[10.0.12, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[10.0.2, )"
             }
           },
           "imports": [

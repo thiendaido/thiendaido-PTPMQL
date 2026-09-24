@@ -1,40 +1,157 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using DemoMVC.Data;
+using DemoMVC.Models;
 
 namespace DemoMVC.Controllers
 {
     public class StudentController : Controller
     {
-        // 1. Action hiển thị và demo ViewData, ViewBag, TempData
-        [HttpGet]
-        public IActionResult DemoState()
+        private readonly ApplicationDbContext _context;
+
+        public StudentController(ApplicationDbContext context)
         {
-            // Gán dữ liệu vào ViewData
-            ViewData["HeaderTitle"] = "Thực hành Quản lý Trạng thái";
-            ViewData["ItemCount"] = 10;
+            _context = context;
+        }
 
-            // Gán dữ liệu vào ViewBag
-            ViewBag.Message = "Dữ liệu này được truyền từ ViewBag!";
-            ViewBag.CurrentDate = DateTime.Now.ToString("dd/MM/yyyy");
+        // GET: Student
+        public async Task<IActionResult> Index()
+        {
+            return View(await _context.Students.ToListAsync());
+        }
 
+        // GET: Student/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var student = await _context.Students
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            return View(student);
+        }
+
+        // GET: Student/Create
+        public IActionResult Create()
+        {
             return View();
         }
 
-        // 2. Action nhận Submit Form và dùng TempData để chuyển hướng (Redirect)
+        // POST: Student/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public IActionResult SubmitState(string studentName)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,HoTen,Tuoi,DiaChi,Truong")] Student student)
         {
-            if (string.IsNullOrEmpty(studentName))
+            if (ModelState.IsValid)
             {
-                // Thông báo lỗi nếu chưa nhập tên
-                TempData["ErrorMessage"] = "Vui lòng nhập tên sinh viên!";
-                return RedirectToAction("DemoState");
+                _context.Add(student);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(student);
+        }
+
+        // GET: Student/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
             }
 
-            // Lưu thông báo thành công vào TempData để chuyển sang trang DemoState
-            TempData["SuccessMessage"] = $"Thêm sinh viên '{studentName}' thành công!";
-            
-            // Redirect sang Get Action (Request thứ 2)
-            return RedirectToAction("DemoState");
+            var student = await _context.Students.FindAsync(id);
+            if (student == null)
+            {
+                return NotFound();
+            }
+            return View(student);
+        }
+
+        // POST: Student/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,HoTen,Tuoi,DiaChi,Truong")] Student student)
+        {
+            if (id != student.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(student);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!StudentExists(student.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(student);
+        }
+
+        // GET: Student/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var student = await _context.Students
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            return View(student);
+        }
+
+        // POST: Student/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var student = await _context.Students.FindAsync(id);
+            if (student != null)
+            {
+                _context.Students.Remove(student);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool StudentExists(int id)
+        {
+            return _context.Students.Any(e => e.Id == id);
         }
     }
 }
