@@ -21,13 +21,51 @@ namespace DemoMVC.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("DemoMVC.Models.Khoa", b =>
+                {
+                    b.Property<string>("MaKhoa")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TenKhoa")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MaKhoa");
+
+                    b.ToTable("Khoas");
+
+                    b.HasData(
+                        new
+                        {
+                            MaKhoa = "05",
+                            TenKhoa = "Công nghệ thông tin"
+                        },
+                        new
+                        {
+                            MaKhoa = "01",
+                            TenKhoa = "Dầu khí"
+                        },
+                        new
+                        {
+                            MaKhoa = "02",
+                            TenKhoa = "Mỏ"
+                        },
+                        new
+                        {
+                            MaKhoa = "03",
+                            TenKhoa = "Trắc địa - Bản đồ và Quản lý đất đai"
+                        },
+                        new
+                        {
+                            MaKhoa = "04",
+                            TenKhoa = "Cơ - Điện"
+                        });
+                });
+
             modelBuilder.Entity("DemoMVC.Models.Student", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("DiaChi")
                         .IsRequired()
@@ -35,18 +73,37 @@ namespace DemoMVC.Migrations
 
                     b.Property<string>("HoTen")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Truong")
+                    b.Property<string>("MaKhoa")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Tuoi")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MaKhoa");
+
                     b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("DemoMVC.Models.Student", b =>
+                {
+                    b.HasOne("DemoMVC.Models.Khoa", "Khoa")
+                        .WithMany("Students")
+                        .HasForeignKey("MaKhoa")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Khoa");
+                });
+
+            modelBuilder.Entity("DemoMVC.Models.Khoa", b =>
+                {
+                    b.Navigation("Students");
                 });
 #pragma warning restore 612, 618
         }

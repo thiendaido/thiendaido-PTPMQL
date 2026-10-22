@@ -26,8 +26,8 @@ app.UseAuthorization();
 app.MapStaticAssets();
 
 app.MapControllerRoute(
-  name: "default",
-    pattern: "{controller=Student}/{action=DemoState}/{id?}");
+    name: "default",
+    pattern: "{controller=Student}/{action=Index}/{id?}");
 
 
 app.Run();
