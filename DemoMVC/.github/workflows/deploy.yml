@@ -1,12 +1,20 @@
-name: ASP.NET Core MVC CI
+name: Build and deploy DemoMVC
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: runasp-production
+  cancel-in-progress: true
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,13 +24,27 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: 10.0.x
 
       - name: Restore dependencies
-        run: dotnet restore ./DemoMVC
+        run: dotnet restore DemoMVC/DemoMVC.csproj
 
       - name: Build project
-        run: dotnet build ./DemoMVC --configuration Release --no-restore
+        run: dotnet build DemoMVC/DemoMVC.csproj --configuration Release --no-restore
 
       - name: Publish project
-        run: dotnet publish ./DemoMVC --configuration Release --output ./publish --no-build
+        run: dotnet publish DemoMVC/DemoMVC.csproj --configuration Release --output ./publish --no-build
+
+      - name: Deploy to runasp.net over FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.RUNASP_FTP_SERVER }}
+          username: ${{ secrets.RUNASP_FTP_USERNAME }}
+          password: ${{ secrets.RUNASP_FTP_PASSWORD }}
+          protocol: ${{ secrets.RUNASP_FTP_PROTOCOL || 'ftps' }}
+          server-dir: ${{ secrets.RUNASP_FTP_SERVER_DIR }}
+          local-dir: ./publish/
+          exclude: |
+            **/students.db
+            **/students.db-shm
+            **/students.db-wal

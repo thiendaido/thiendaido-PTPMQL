@@ -1,66 +1,153 @@
-@model DemoMVC.Models.Student
+@model IReadOnlyList<DemoMVC.Models.Khoa>
 
-<h1>View Index StudentController</h1>
+@{
+    ViewData["Title"] = "Quản lý sinh viên";
+}
 
-<form asp-action="Index" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+@Html.AntiForgeryToken()
 
-    <div style="margin-bottom: 10px;">
-        <label asp-for="HoTen"></label><br />
-        <input asp-for="HoTen" />
-        <span asp-validation-for="HoTen" class="text-danger"></span>
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+        <h1 class="h2 mb-1">Quản lý sinh viên</h1>
+        <p class="text-muted mb-0">Thêm, cập nhật, xem và xóa hồ sơ sinh viên.</p>
     </div>
+    <button id="addStudentButton" type="button" class="btn btn-primary">
+        Thêm sinh viên
+    </button>
+</div>
 
-    <div style="margin-bottom: 10px;">
-        <label asp-for="NgaySinh"></label><br />
-        <input asp-for="NgaySinh" type="date" />
-        <span asp-validation-for="NgaySinh" class="text-danger"></span>
+<div id="pageAlert" class="alert alert-danger d-none" role="alert"></div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <div class="row g-3 align-items-center mb-3">
+            <div class="col-md">
+                <label for="studentSearch" class="form-label visually-hidden">Tìm kiếm sinh viên</label>
+                <input id="studentSearch"
+                       type="search"
+                       class="form-control"
+                       placeholder="Tìm theo mã, họ tên, email hoặc khoa..."
+                       autocomplete="off" />
+            </div>
+            <div class="col-md-auto">
+                <label for="pageSize" class="form-label me-2">Số dòng</label>
+                <select id="pageSize" class="form-select d-inline-block w-auto">
+                    <option value="5">5</option>
+                    <option value="10" selected>10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Mã sinh viên</th>
+                        <th scope="col">Họ và tên</th>
+                        <th scope="col">Ngày sinh</th>
+                        <th scope="col">Giới tính</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Khoa</th>
+                        <th scope="col">Năm nhập học</th>
+                        <th scope="col">Hệ đào tạo</th>
+                        <th scope="col" class="text-end">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody id="studentRows">
+                    <tr>
+                        <td colspan="9" class="text-center text-muted py-4">Đang tải dữ liệu...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+            <span id="paginationInfo" class="small text-muted" aria-live="polite"></span>
+            <nav aria-label="Phân trang danh sách sinh viên">
+                <ul id="pagination" class="pagination mb-0"></ul>
+            </nav>
+        </div>
     </div>
+</div>
 
-    <div style="margin-bottom: 10px;">
-        <label asp-for="GioiTinh"></label><br />
-        <input asp-for="GioiTinh" />
-        <span asp-validation-for="GioiTinh" class="text-danger"></span>
+<div class="modal fade" id="studentModal" tabindex="-1" aria-labelledby="studentModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title fs-5" id="studentModalTitle"></h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+            </div>
+            <div class="modal-body">
+                <div id="deleteConfirmation" class="alert alert-warning d-none" role="alert"></div>
+                <form id="studentForm" novalidate>
+                    <div id="formValidationSummary" class="alert alert-danger d-none" role="alert"></div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="studentId" class="form-label">Mã sinh viên</label>
+                            <input id="studentId" name="Id" class="form-control" maxlength="10" minlength="10" required />
+                            <span class="invalid-feedback" data-valmsg-for="Id"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="studentName" class="form-label">Họ và tên</label>
+                            <input id="studentName" name="HoTen" class="form-control" maxlength="100" required />
+                            <span class="invalid-feedback" data-valmsg-for="HoTen"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="studentBirthDate" class="form-label">Ngày sinh</label>
+                            <input id="studentBirthDate" name="NgaySinh" type="date" class="form-control" required />
+                            <span class="invalid-feedback" data-valmsg-for="NgaySinh"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="studentGender" class="form-label">Giới tính</label>
+                            <select id="studentGender" name="GioiTinh" class="form-select" required>
+                                <option value="">-- Chọn giới tính --</option>
+                                @foreach (var gender in DemoMVC.Models.Student.GioiTinhOptions)
+                                {
+                                    <option value="@gender">@gender</option>
+                                }
+                            </select>
+                            <span class="invalid-feedback" data-valmsg-for="GioiTinh"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="studentEmail" class="form-label">Email</label>
+                            <input id="studentEmail" name="Email" type="email" class="form-control" maxlength="256" />
+                            <span class="invalid-feedback" data-valmsg-for="Email"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="studentDepartment" class="form-label">Khoa</label>
+                            <select id="studentDepartment" name="MaKhoa" class="form-select" required>
+                                <option value="">-- Chọn khoa --</option>
+                                @foreach (var khoa in Model)
+                                {
+                                    <option value="@khoa.MaKhoa">@khoa.TenKhoa</option>
+                                }
+                            </select>
+                            <span class="invalid-feedback" data-valmsg-for="MaKhoa"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="studentEnrollmentYear" class="form-label">Năm nhập học</label>
+                            <input id="studentEnrollmentYear" name="NamNhapHoc" type="number" min="2000" max="9999" class="form-control" required />
+                            <span class="invalid-feedback" data-valmsg-for="NamNhapHoc"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="studentProgram" class="form-label">Mã hệ đào tạo</label>
+                            <input id="studentProgram" name="HeDaoTao" inputmode="numeric" pattern="[0-9]{2}" maxlength="2" class="form-control" required />
+                            <span class="invalid-feedback" data-valmsg-for="HeDaoTao"></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button id="deleteStudentButton" type="button" class="btn btn-danger d-none">Xóa sinh viên</button>
+                <button id="saveStudentButton" type="submit" form="studentForm" class="btn btn-primary">Lưu</button>
+            </div>
+        </div>
     </div>
+</div>
 
-    <div style="margin-bottom: 10px;">
-        <label asp-for="Email"></label><br />
-        <input asp-for="Email" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-
-    <div style="margin-bottom: 10px;">
-        <label asp-for="MaKhoa"></label><br />
-        <input asp-for="MaKhoa" />
-        <span asp-validation-for="MaKhoa" class="text-danger"></span>
-    </div>
-
-    <div style="margin-bottom: 10px;">
-        <label asp-for="NamNhapHoc"></label><br />
-        <input asp-for="NamNhapHoc" type="number" />
-        <span asp-validation-for="NamNhapHoc" class="text-danger"></span>
-    </div>
-
-    <div style="margin-bottom: 10px;">
-        <label asp-for="HeDaoTao"></label><br />
-        <input asp-for="HeDaoTao" />
-        <span asp-validation-for="HeDaoTao" class="text-danger"></span>
-    </div>
-
-    <button type="submit">Gửi dữ liệu</button>
-</form>
-
-@if (Model != null)
-{
-    <hr />
-    <div style="color: green;">
-        <h3>Thông tin sinh viên đã nhận:</h3>
-        <p><strong>Họ tên:</strong> @Model.HoTen</p>
-        <p><strong>Ngày sinh:</strong> @Model.NgaySinh?.ToString("dd/MM/yyyy")</p>
-        <p><strong>Giới tính:</strong> @Model.GioiTinh</p>
-        <p><strong>Email:</strong> @Model.Email</p>
-        <p><strong>Mã khoa:</strong> @Model.MaKhoa</p>
-        <p><strong>Năm nhập học:</strong> @Model.NamNhapHoc</p>
-        <p><strong>Mã hệ đào tạo:</strong> @Model.HeDaoTao</p>
-    </div>
+@section Scripts {
+    <script src="~/js/student-index.js" asp-append-version="true"></script>
 }

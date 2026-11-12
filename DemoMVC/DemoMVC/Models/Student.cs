@@ -5,6 +5,9 @@ namespace DemoMVC.Models;
 
 public class Student
 {
+    public static IReadOnlyList<string> GioiTinhOptions { get; } =
+        ["Nam", "Nữ", "Không xác định"];
+
     [Key]
     [StringLength(10, MinimumLength = 10)]
     public string Id { get; set; } = string.Empty;
@@ -21,6 +24,7 @@ public class Student
 
     [Required]
     [StringLength(10)]
+    [RegularExpression("^(Nam|Nữ|Không xác định)$", ErrorMessage = "Vui lòng chọn giới tính hợp lệ.")]
     [Display(Name = "Giới tính")]
     public string GioiTinh { get; set; } = string.Empty;
 
