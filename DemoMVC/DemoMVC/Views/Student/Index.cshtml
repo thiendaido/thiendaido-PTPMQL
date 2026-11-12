@@ -1,0 +1,66 @@
+@model DemoMVC.Models.Student
+
+<h1>View Index StudentController</h1>
+
+<form asp-action="Index" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div style="margin-bottom: 10px;">
+        <label asp-for="HoTen"></label><br />
+        <input asp-for="HoTen" />
+        <span asp-validation-for="HoTen" class="text-danger"></span>
+    </div>
+
+    <div style="margin-bottom: 10px;">
+        <label asp-for="NgaySinh"></label><br />
+        <input asp-for="NgaySinh" type="date" />
+        <span asp-validation-for="NgaySinh" class="text-danger"></span>
+    </div>
+
+    <div style="margin-bottom: 10px;">
+        <label asp-for="GioiTinh"></label><br />
+        <input asp-for="GioiTinh" />
+        <span asp-validation-for="GioiTinh" class="text-danger"></span>
+    </div>
+
+    <div style="margin-bottom: 10px;">
+        <label asp-for="Email"></label><br />
+        <input asp-for="Email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div style="margin-bottom: 10px;">
+        <label asp-for="MaKhoa"></label><br />
+        <input asp-for="MaKhoa" />
+        <span asp-validation-for="MaKhoa" class="text-danger"></span>
+    </div>
+
+    <div style="margin-bottom: 10px;">
+        <label asp-for="NamNhapHoc"></label><br />
+        <input asp-for="NamNhapHoc" type="number" />
+        <span asp-validation-for="NamNhapHoc" class="text-danger"></span>
+    </div>
+
+    <div style="margin-bottom: 10px;">
+        <label asp-for="HeDaoTao"></label><br />
+        <input asp-for="HeDaoTao" />
+        <span asp-validation-for="HeDaoTao" class="text-danger"></span>
+    </div>
+
+    <button type="submit">Gửi dữ liệu</button>
+</form>
+
+@if (Model != null)
+{
+    <hr />
+    <div style="color: green;">
+        <h3>Thông tin sinh viên đã nhận:</h3>
+        <p><strong>Họ tên:</strong> @Model.HoTen</p>
+        <p><strong>Ngày sinh:</strong> @Model.NgaySinh?.ToString("dd/MM/yyyy")</p>
+        <p><strong>Giới tính:</strong> @Model.GioiTinh</p>
+        <p><strong>Email:</strong> @Model.Email</p>
+        <p><strong>Mã khoa:</strong> @Model.MaKhoa</p>
+        <p><strong>Năm nhập học:</strong> @Model.NamNhapHoc</p>
+        <p><strong>Mã hệ đào tạo:</strong> @Model.HeDaoTao</p>
+    </div>
+}
