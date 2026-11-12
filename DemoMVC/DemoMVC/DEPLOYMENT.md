@@ -1,6 +1,6 @@
 # Automatic deployment to runasp.net
 
-The GitHub Actions workflow at `DemoMVC/.github/workflows/deploy.yml` builds and
+The GitHub Actions workflow at `.github/workflows/deploy.yml` builds and
 publishes this project whenever a commit is pushed to `main`, then uploads the
 publish output to the hosting account over FTPS.
 
